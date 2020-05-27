@@ -6,6 +6,7 @@
 package id.co.PPMToolFullStack.services;
 
 import id.co.PPMToolFullStack.domain.Project;
+import id.co.PPMToolFullStack.exceptions.ProjectIdException;
 import id.co.PPMToolFullStack.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProjectService {
+    
     @Autowired
     private ProjectRepository projectRepository;
     
-    public Project saveOrUpdateProject(Project project){
+    public Project saveOrUpdateProject(Project project) {
+        try {
+            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            return projectRepository.save(project);
+        } catch (Exception e) {
+            throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exists");
+        }
         
-
-        return projectRepository.save(project);
-    }    
+    }
 }
