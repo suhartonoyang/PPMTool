@@ -11,34 +11,32 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @SpringBootApplication
 public class PpmToolFullStackApplication extends SpringBootServletInitializer {
-
-//	public static void main(String[] args) {
-//		SpringApplication.run(PpmToolFullStackApplication.class, args);
-//	}
-//
-//	@Override
-//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//		return super.configure(builder);
-//	}
-//	
-//	
-
+//public class PpmToolFullStackApplication {
 	public static void main(String[] args) {
-		SpringApplicationBuilder springApplicationBuilder = (SpringApplicationBuilder) new SpringApplicationBuilder(
-				PpmToolFullStackApplication.class).sources(PpmToolFullStackApplication.class)
-						.properties(getProperties()).run(args);
+		SpringApplication.run(PpmToolFullStackApplication.class, args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		// TODO Auto-generated method stub
-		return builder.sources(PpmToolFullStackApplication.class).properties(getProperties());
+		return super.configure(builder);
 	}
 
-	static Properties getProperties() {
-		Properties properties = new Properties();
-		properties.put("spring.config.location", "classspath:PPMTool");
-		return properties;
-	}
+//	public static void main(String[] args) {
+//		SpringApplicationBuilder springApplicationBuilder = (SpringApplicationBuilder) new SpringApplicationBuilder(
+//				PpmToolFullStackApplication.class).sources(PpmToolFullStackApplication.class)
+//						.properties(getProperties()).run(args);
+//	}
+//
+//	@Override
+//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//		// TODO Auto-generated method stub
+//		return builder.sources(PpmToolFullStackApplication.class).properties(getProperties());
+//	}
+//
+//	static Properties getProperties() {
+//		Properties properties = new Properties();
+//		properties.put("spring.config.location", "classspath:PPMTool");
+//		return properties;
+//	}
 
 }
