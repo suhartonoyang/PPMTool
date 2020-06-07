@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,15 +17,12 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
 @Entity
 public class ProjectTask {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(updatable = false)
+	@Column(updatable = false, unique = true)
 	private String projectSequence;
 	@NotBlank(message = "Please include a project summary")
 	private String summary;
@@ -33,7 +32,7 @@ public class ProjectTask {
 	private Date dueDate;
 
 	// Many to One with backlog
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "backlog_id", nullable = false, updatable = false)
 	@JsonIgnore
 	private Backlog backlog;
