@@ -42,11 +42,9 @@ public class ProjectTaskService {
 			projectTask.setProjectIdentifier(backlog_id);
 
 			// Initial priority when priority null
-			if (projectTask.getPriority() == null) {
+			if (projectTask.getPriority() == 0 || projectTask.getPriority() == null) {
 				projectTask.setPriority(3);
-			} else if (projectTask.getPriority() == 0) {
-				projectTask.setPriority(3);
-			}
+			} 
 			// Initial status when status null
 			if (projectTask.getStatus() == "" || projectTask.getStatus() == null) {
 				projectTask.setStatus("TO_DO");

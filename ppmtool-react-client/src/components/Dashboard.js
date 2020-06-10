@@ -12,7 +12,25 @@ class Dashboard extends Component {
   }
 
   render() {
-    const projects = this.props.project.projects;
+    const projects = this.props.project; // ini cara assign variable reducer state yang pertama
+
+    let dashboardContent;
+
+    const dashboardAlgo = (projects) => {
+      if (projects.length < 1) {
+        return (
+          <div className="alert alert-info text-center" role="alert">
+            No Projects on dashboard
+          </div>
+        );
+      } else {
+        return projects.map((project) => (
+          <ProjectItem key={project.id} project={project} />
+        ));
+      }
+    };
+
+    dashboardContent = dashboardAlgo(projects);
 
     return (
       <div className="projects">
@@ -24,10 +42,12 @@ class Dashboard extends Component {
               <CreateProjectButton />
               <br />
               <hr />
-
-              {projects.map((project) => (
-                <ProjectItem key={project.id} project={project} />
-              ))}
+              {dashboardContent}
+              {
+                //   {projects.map((project) => (
+                //   <ProjectItem key={project.id} project={project} />
+                // ))}
+              }
             </div>
           </div>
         </div>
@@ -42,7 +62,7 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  project: state.project, //sesuai dengan index di reducers
+  project: state.project.projects, //sesuai dengan index di reducers
 });
 
 export default connect(mapStateToProps, { getProjects })(Dashboard);
