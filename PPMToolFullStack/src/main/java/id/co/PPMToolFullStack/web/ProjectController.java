@@ -5,18 +5,14 @@
  */
 package id.co.PPMToolFullStack.web;
 
-import id.co.PPMToolFullStack.domain.Project;
-import id.co.PPMToolFullStack.services.MapValidationErrorService;
-import id.co.PPMToolFullStack.services.ProjectService;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.security.Principal;
+
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +21,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import id.co.PPMToolFullStack.domain.Project;
+import id.co.PPMToolFullStack.services.MapValidationErrorService;
+import id.co.PPMToolFullStack.services.ProjectService;
 
 /**
  *
@@ -35,42 +35,43 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class ProjectController {
 
-    @Autowired
-    private ProjectService projectService;
+	@Autowired
+	private ProjectService projectService;
 
-    @Autowired
-    private MapValidationErrorService mapValidationErrorService;
+	@Autowired
+	private MapValidationErrorService mapValidationErrorService;
 
-    @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
+	@PostMapping("")
+	public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result,
+			Principal principal) {
 
-        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-        if (errorMap != null) {
-            return errorMap;
-        }
+		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+		if (errorMap != null) {
+			return errorMap;
+		}
 
-        Project project1 = projectService.saveOrUpdateProject(project);
-        return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
-    }
+		Project project1 = projectService.saveOrUpdateProject(project, principal.getName());
+		return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
+	}
 
-    @GetMapping("/{projectId}")
-    public ResponseEntity<?> getProjectById(@PathVariable String projectId) {
+	@GetMapping("/{projectId}")
+	public ResponseEntity<?> getProjectById(@PathVariable String projectId, Principal principal) {
 
-        Project project = projectService.findProjectByIdentifier(projectId.toUpperCase());
-        return new ResponseEntity<Project>(project, HttpStatus.OK);
-    }
+		Project project = projectService.findProjectByIdentifier(projectId.toUpperCase(), principal.getName());
+		return new ResponseEntity<Project>(project, HttpStatus.OK);
+	}
 
-    @GetMapping("/all")
-    public Iterable<Project> getAllProjects() {
+	@GetMapping("/all")
+	public Iterable<Project> getAllProjects(Principal principal) {
 
-        return projectService.findAllProjects();
-    }
+		return projectService.findAllProjects(principal.getName());
+	}
 
-    @DeleteMapping("/{projectId}")
-    public ResponseEntity<?> deleteProjectById(@PathVariable String projectId) {
+	@DeleteMapping("/{projectId}")
+	public ResponseEntity<?> deleteProjectById(@PathVariable String projectId, Principal principal) {
 
-        projectService.deleteProjectByIdentifier(projectId.toUpperCase());
+		projectService.deleteProjectByIdentifier(projectId.toUpperCase(), principal.getName());
 
-        return new ResponseEntity<String>("Project with ID '" + projectId + "' was deleted", HttpStatus.OK);
-    }
+		return new ResponseEntity<String>("Project with ID '" + projectId + "' was deleted", HttpStatus.OK);
+	}
 }

@@ -10,7 +10,7 @@ import id.co.PPMToolFullStack.domain.ProjectTask;
 @Repository
 public interface ProjectTaskRepository extends CrudRepository<ProjectTask, Long> {
 
-	List<ProjectTask> findByProjectIdentifierOrderByPriority(String backlog_id);
+	List<ProjectTask> findByProjectIdentifierOrderByPriority(String projectIdentifer);
 
 	ProjectTask findByProjectSequence(String sequence);
 }
