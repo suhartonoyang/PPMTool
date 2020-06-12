@@ -12,7 +12,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const projects = this.props.project; // ini cara assign variable reducer state yang pertama
+    const { projects } = this.props.project; // ini cara assign variable reducer state yang kedua
 
     let dashboardContent;
 
@@ -62,7 +62,7 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  project: state.project.projects, //sesuai dengan index di reducers
+  project: state.project, //sesuai dengan index di reducers
 });
 
 export default connect(mapStateToProps, { getProjects })(Dashboard);

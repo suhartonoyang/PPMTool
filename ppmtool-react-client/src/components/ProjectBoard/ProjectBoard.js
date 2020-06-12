@@ -27,6 +27,13 @@ class ProjectBoard extends Component {
     }
   }
 
+  newProjectTaskOnClick(errors, e) {
+    if (errors.projectIdentifier) {
+      alert(errors.projectIdentifier);
+      e.preventDefault();
+    }
+  }
+
   render() {
     const { id } = this.props.match.params;
     const { project_tasks } = this.props.backlog; // ini cara assign variable reducer yang kedua
@@ -40,6 +47,12 @@ class ProjectBoard extends Component {
           return (
             <div className="alert alert-danger text-center" role="alert">
               {errors.projectNotFound}
+            </div>
+          );
+        } else if (errors.projectIdentifier) {
+          return (
+            <div className="alert alert-danger text-center" role="alert">
+              {errors.projectIdentifier}
             </div>
           );
         } else {
@@ -58,7 +71,11 @@ class ProjectBoard extends Component {
 
     return (
       <div className="container">
-        <Link to={`/addProjectTask/${id}`} className="btn btn-primary mb-3">
+        <Link
+          to={`/addProjectTask/${id}`}
+          className="btn btn-primary mb-3"
+          onClick={this.newProjectTaskOnClick.bind(this, errors)}
+        >
           <i className="fas fa-plus-circle"> Create Project Task</i>
         </Link>
         <br />
