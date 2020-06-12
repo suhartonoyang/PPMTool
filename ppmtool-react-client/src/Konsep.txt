@@ -1,0 +1,5 @@
+React-redux:
+1. define types dulu
+2. define actions
+3. define reducer. dalam reducer define variable yang akan direturn
+4. define reducer dalam index reducer
