@@ -4,6 +4,7 @@ import Backlog from "./Backlog";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getBacklog } from "../../actions/backlogActions";
+import SpinnerLoading from "../SpinnerLoading";
 
 class ProjectBoard extends Component {
   constructor(props) {
@@ -11,12 +12,30 @@ class ProjectBoard extends Component {
 
     this.state = {
       errors: {},
+      isLoading: true,
     };
   }
 
-  componentDidMount() {
+  setStateAsync(state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve);
+    });
+  }
+
+  async componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.getBacklog(id);
+    await this.props.getBacklog(id);
+    const { isLoading } = this.props.backlog;
+    await this.setStateAsync({
+      isLoading: isLoading,
+    });
+
+    // setTimeout(
+    //   function () {
+    //     this.setState({ isLoading: false });
+    //   }.bind(this),
+    //   1000
+    // );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,8 +60,13 @@ class ProjectBoard extends Component {
 
     let BoardContent;
 
-    const boardAlgorithm = (errors, project_tasks) => {
-      if (project_tasks.length < 1) {
+    const boardAlgorithm = (errors, project_tasks, isLoading) => {
+      if (
+        project_tasks &&
+        project_tasks !== undefined &&
+        project_tasks.length < 1 &&
+        !isLoading
+      ) {
         if (errors.projectNotFound) {
           return (
             <div className="alert alert-danger text-center" role="alert">
@@ -63,11 +87,13 @@ class ProjectBoard extends Component {
           );
         }
       } else {
-        return <Backlog project_tasks_prop={project_tasks} />;
+        if (project_tasks && project_tasks !== undefined && !isLoading) {
+          return <Backlog project_tasks_prop={project_tasks} />;
+        }
       }
     };
 
-    BoardContent = boardAlgorithm(errors, project_tasks);
+    BoardContent = boardAlgorithm(errors, project_tasks, this.state.isLoading);
 
     return (
       <div className="container">
@@ -80,6 +106,7 @@ class ProjectBoard extends Component {
         </Link>
         <br />
         <hr />
+        <SpinnerLoading isLoading={this.state.isLoading} />
         {BoardContent}
       </div>
     );

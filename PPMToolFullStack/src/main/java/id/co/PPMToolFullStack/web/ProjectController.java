@@ -10,6 +10,7 @@ import java.security.Principal;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import id.co.PPMToolFullStack.domain.Project;
+import id.co.PPMToolFullStack.dto.Pagination;
 import id.co.PPMToolFullStack.services.MapValidationErrorService;
 import id.co.PPMToolFullStack.services.ProjectService;
 
@@ -65,6 +67,15 @@ public class ProjectController {
 	public Iterable<Project> getAllProjects(Principal principal) {
 
 		return projectService.findAllProjects(principal.getName());
+	}
+
+	@GetMapping("/all/pagination")
+	public ResponseEntity<?> getAllProjectsPaging(Principal principal, Pageable pageable) {
+		Pagination pagination = projectService.findAllProjectsPaging(principal.getName(), pageable);
+
+//		List<Project> pagination = projectService.findAllProjectsPaging(principal.getName(), pageable);
+
+		return new ResponseEntity<Pagination>(pagination, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{projectId}")

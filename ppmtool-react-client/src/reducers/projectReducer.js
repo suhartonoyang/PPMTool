@@ -1,8 +1,15 @@
-import { GET_PROJECTS, GET_PROJECT, DELETE_PROJECT } from "../actions/types";
+import {
+  GET_PROJECTS,
+  GET_PROJECT,
+  DELETE_PROJECT,
+  GET_PROJECTS_PAGING,
+} from "../actions/types";
 
 const initialState = {
   projects: [],
   project: {},
+  projectPaging: {},
+  isLoading: true,
 };
 
 export default function (state = initialState, action) {
@@ -11,6 +18,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         projects: action.payload,
+      };
+
+    case GET_PROJECTS_PAGING:
+      return {
+        ...state,
+        projectPaging: action.payload,
+        isLoading: false,
       };
 
     case GET_PROJECT:

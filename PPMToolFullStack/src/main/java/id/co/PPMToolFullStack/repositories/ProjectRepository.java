@@ -5,6 +5,8 @@
  */
 package id.co.PPMToolFullStack.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +25,7 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
 	Iterable<Project> findAll();
 
 	Iterable<Project> findAllByProjectLeader(String username);
+
+	Page<Project> findAllByProjectLeader(String username, Pageable pageable);
 
 }

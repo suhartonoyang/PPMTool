@@ -63,6 +63,7 @@ class Backlog extends Component {
             {doneItems}
           </div>
         </div>
+        <br />
       </div>
     );
   }

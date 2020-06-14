@@ -7,6 +7,7 @@ import {
 const initialState = {
   project_tasks: [],
   project_task: {},
+  isLoading: true,
 };
 
 export default function (state = initialState, action) {
@@ -15,6 +16,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         project_tasks: action.payload,
+        isLoading: false,
       };
 
     case GET_PROJECT_TASK:

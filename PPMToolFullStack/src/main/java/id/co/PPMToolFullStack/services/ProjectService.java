@@ -6,11 +6,14 @@
 package id.co.PPMToolFullStack.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import id.co.PPMToolFullStack.domain.Backlog;
 import id.co.PPMToolFullStack.domain.Project;
 import id.co.PPMToolFullStack.domain.User;
+import id.co.PPMToolFullStack.dto.Pagination;
 import id.co.PPMToolFullStack.exceptions.ProjectIdException;
 import id.co.PPMToolFullStack.exceptions.ProjectNotFoundException;
 import id.co.PPMToolFullStack.repositories.BacklogRepository;
@@ -91,6 +94,17 @@ public class ProjectService {
 
 	public Iterable<Project> findAllProjects(String username) {
 		return projectRepository.findAllByProjectLeader(username);
+	}
+
+	public Pagination findAllProjectsPaging(String username, Pageable pageable) {
+		Pagination pagination = new Pagination();
+		Page<Project> projectPage = projectRepository.findAllByProjectLeader(username, pageable);
+		pagination.setContent(projectPage.getContent());
+		pagination.setSize(projectPage.getSize());
+		pagination.setTotalElements(projectPage.getTotalElements());
+		pagination.setTotalPages(projectPage.getTotalPages());
+
+		return pagination;
 	}
 
 	public void deleteProjectByIdentifier(String projectId, String username) {
