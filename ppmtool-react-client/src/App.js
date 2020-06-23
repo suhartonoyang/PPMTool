@@ -18,6 +18,7 @@ import setJWTToken from "./securityUtils/setJWTToken";
 import { SET_CURRENT_USER } from "./actions/types";
 import { logout } from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/SecureRoute";
+import Dashboard1 from "./components/Dashboard1";
 
 const jwtToken = localStorage.jwtToken;
 if (jwtToken) {
@@ -53,7 +54,7 @@ function App() {
             // private Routes
           }
           <Switch>
-            <SecuredRoute exact path="/dashboard" component={Dashboard} />
+            <SecuredRoute exact path="/dashboard" component={Dashboard1} />
             <SecuredRoute exact path="/addProject" component={AddProject} />
             <SecuredRoute
               exact
